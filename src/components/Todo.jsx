@@ -1,28 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { TodoDateTime } from "./TodoDateTime";
 
 export const Todo = () => {
   const [input, setInput] = useState("");
-  const [dateTime, setDateTime] = useState("");
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
-      const formattedDate = now.toLocaleDateString();
-      const formattedTime = now.toLocaleTimeString();
-      setDateTime(`${formattedDate} - ${formattedTime}`);
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
 
   return (
     <section className="todo-container">
       <header>
         <h1>Todo List</h1>
       </header>
-      <h2 className="date-time">{dateTime}</h2>
+      <TodoDateTime />
       <section className="form">
         <form>
           <div className="input-group">
