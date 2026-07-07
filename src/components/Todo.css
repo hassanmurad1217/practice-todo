@@ -159,3 +159,43 @@
 .todo-item button:active {
   transform: scale(0.95);
 }
+
+/* Clear All button container */
+.clear-btn-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Clear All button */
+.clear-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+
+  background: #ef4444;
+  color: white;
+
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+/* Hover */
+.clear-btn:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+/* Click */
+.clear-btn:active {
+  transform: scale(0.96);
+}
+
+/* Focus */
+.clear-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+}

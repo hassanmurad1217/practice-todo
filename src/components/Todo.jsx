@@ -32,6 +32,11 @@ export const Todo = () => {
     setTasks(updatedTask);
   };
 
+  // delete all functionality
+  const handleDeleteTodoData = () => {
+    setTasks([]);
+  };
+
   return (
     <section className="todo-container">
       <header>
@@ -73,6 +78,11 @@ export const Todo = () => {
             </li>
           ))}
         </ul>
+      </section>
+      <section className="clear-btn-container">
+        <button className="clear-btn" onClick={handleDeleteTodoData}>
+          Clear All
+        </button>
       </section>
     </section>
   );
