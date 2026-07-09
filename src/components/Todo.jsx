@@ -2,16 +2,12 @@ import { useState } from "react";
 import { TodoDateTime } from "./TodoDateTime";
 import { TodoForm } from "./TodoForm";
 import { TodoList } from "./TodoList";
-
-const todoKey = "reactTodo";
+import { getLocalStorage, setLocalStorage } from "./TodoLocalStorage";
 
 // Main Todo component that manages the todo list
 export const Todo = () => {
   // State: tasks is an array of todo objects: { id, content, checked }
-  const [tasks, setTasks] = useState(() => {
-    const rawTodo = localStorage.getItem(todoKey);
-    return JSON.parse(rawTodo);
-  });
+  const [tasks, setTasks] = useState(() => getLocalStorage());
 
   // Handler to add a new todo item from the form input
   const handleFormSubmit = (inputValue) => {
@@ -31,15 +27,15 @@ export const Todo = () => {
     setTasks((prev) => [...prev, { id, content, checked }]);
   };
 
+  // Local Storage
+  setLocalStorage(tasks);
+
   // Handler to delete a single todo item by its content value
   // (value represents the 'content' property of the todo)
   const handleDeleteTodo = (value) => {
     const updatedTask = tasks.filter((curElem) => curElem.content !== value);
     setTasks(updatedTask);
   };
-
-  // Todo LocalStorage
-  localStorage.setItem(todoKey, JSON.stringify(tasks));
 
   // Handler to delete all todo items (clear the list)
   const handleDeleteTodoData = () => {
