@@ -3,28 +3,59 @@ import { TodoDateTime } from "./TodoDateTime";
 import { TodoForm } from "./TodoForm";
 import { TodoList } from "./TodoList";
 
-export const Todo = () => {
-  // tasks is a list of strings
-  const [tasks, setTasks] = useState([]);
+const todoKey = "reactTodo";
 
-  // form functionality
+// Main Todo component that manages the todo list
+export const Todo = () => {
+  // State: tasks is an array of todo objects: { id, content, checked }
+  const [tasks, setTasks] = useState(() => {
+    const rawTodo = localStorage.getItem(todoKey);
+    return JSON.parse(rawTodo);
+  });
+
+  // Handler to add a new todo item from the form input
   const handleFormSubmit = (inputValue) => {
-    if (inputValue.trim() === "") return;
-    if (tasks.includes(inputValue)) {
-      return;
-    }
-    setTasks((prev) => [...prev, inputValue]);
+    // inputValue should be an object: { id, content, checked }
+    const { id, content, checked } = inputValue || {};
+
+    // Prevent adding a task if content is empty or whitespace
+    if (!content || content.trim() === "") return;
+
+    // Prevent adding duplicate tasks based on their content
+    const ifTodoContentMatched = tasks.find(
+      (curElem) => curElem.content === content,
+    );
+    if (ifTodoContentMatched) return;
+
+    // Add the new task to the existing tasks array
+    setTasks((prev) => [...prev, { id, content, checked }]);
   };
 
-  // delete button functionality
+  // Handler to delete a single todo item by its content value
+  // (value represents the 'content' property of the todo)
   const handleDeleteTodo = (value) => {
-    const updatedTask = tasks.filter((curElem) => curElem !== value);
+    const updatedTask = tasks.filter((curElem) => curElem.content !== value);
     setTasks(updatedTask);
   };
 
-  // delete all functionality
+  // Todo LocalStorage
+  localStorage.setItem(todoKey, JSON.stringify(tasks));
+
+  // Handler to delete all todo items (clear the list)
   const handleDeleteTodoData = () => {
     setTasks([]);
+  };
+
+  // For check Funcationality
+  const handleCheckTodo = (content) => {
+    const updatedTask = tasks.map((curElem) => {
+      if (curElem.content === content) {
+        return { ...curElem, checked: !curElem.checked };
+      } else {
+        return curElem;
+      }
+    });
+    setTasks(updatedTask);
   };
 
   return (
@@ -33,26 +64,30 @@ export const Todo = () => {
         <h1>Todo List</h1>
       </header>
 
+      {/* Displays current date and time */}
       <TodoDateTime />
 
-      {/* form to add a new task */}
+      {/* Renders the form to add a new task */}
       <TodoForm onAddTodo={handleFormSubmit} />
 
-      {/* display all added tasks */}
+      {/* Renders the list of all added tasks */}
       <section className="myUnOrdList">
         <ul>
-          {tasks.map((curElem, idx) => {
+          {tasks.map((curElem) => {
             return (
               <TodoList
-                key={idx}
-                data={curElem}
+                key={curElem.id}
+                data={curElem.content}
+                checked={curElem.checked}
                 handleDeleteTodo={handleDeleteTodo}
+                onHandleCheckTodo={handleCheckTodo}
               />
             );
           })}
         </ul>
       </section>
       <section className="clear-btn-container">
+        {/* Button to clear all todo items */}
         <button className="clear-btn" onClick={handleDeleteTodoData}>
           Clear All
         </button>

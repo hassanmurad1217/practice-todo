@@ -1,10 +1,15 @@
 import * as MdIcons from "react-icons/md";
 
-export const TodoList = ({ key, data, handleDeleteTodo }) => {
+export const TodoList = ({
+  data,
+  checked,
+  onHandleCheckTodo,
+  handleDeleteTodo,
+}) => {
   return (
-    <li key={key} className="todo-item">
-      <span className="notCheckList">{data}</span>
-      <button>
+    <li className="todo-item">
+      <span className={checked ? "checkList" : "notCheckList"}>{data}</span>
+      <button onClick={() => onHandleCheckTodo(data)}>
         <MdIcons.MdCheck />
       </button>
       <button onClick={() => handleDeleteTodo(data)}>

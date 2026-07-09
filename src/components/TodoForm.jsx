@@ -2,17 +2,17 @@ import { useState } from "react";
 
 export const TodoForm = ({ onAddTodo }) => {
   // state for the input field
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState({});
   // inpuut field
   const handleInputChange = (value) => {
-    setInputValue(value);
+    setInputValue({ id: value, content: value, checked: false });
   };
 
   // form functionality in child component
   const handleFormSubmit = (event) => {
     event.preventDefault();
     onAddTodo(inputValue);
-    setInputValue("");
+    setInputValue({ id: "", content: "", checked: false });
   };
 
   return (
@@ -23,7 +23,7 @@ export const TodoForm = ({ onAddTodo }) => {
             type="text"
             className="todo-input"
             autoComplete="off"
-            value={inputValue}
+            value={inputValue.content}
             onChange={(e) => handleInputChange(e.target.value)}
           />
           <button type="submit" className="AddTask-btn">
